@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Signup</title>
+    <link href="css/style.css" rel="stylesheet" />
+    <style>
+        /* Additional CSS for the top-edge-link */
+        .top-edge-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: url('https://images.unsplash.com/photo-1490650404312-a2175773bbf5?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dGF4aXxlbnwwfHwwfHx8MA%3D%3D') no-repeat center center fixed;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="top-edge-link">🏠</a>
+    <div class="login-container">
+        <form class="login-form" action="connect.php" method="post" enctype="multipart/form-data" onsubmit="return validateSignup()">
+            <h2>Driver Signup</h2>
+            <input type="hidden" name="user_type" value="driver">
+            <input type="text" placeholder="Username" name="username" required>
+            <input type="email" placeholder="Email" name="email" required>
+            <div class="password-container">
+                <input type="password" id="password" placeholder="Password" name="password" required>
+                <span class="toggle-password" onclick="togglePasswordVisibility('password')">👁️</span>
+            </div>
+            <div class="password-container">
+                <input type="password" id="confirm_password" placeholder="Confirm Password" name="confirm_password" required>
+                <span class="toggle-password" onclick="togglePasswordVisibility('confirm_password')">👁️</span>
+            </div>
+            <input type="number" placeholder="Phone number" name="pnumber" required>
+            <input type="text" placeholder="Vehicle number" name="vnumber" required>
+            <label for="license" class="file-input-label">Upload License Copy:</label>
+            <input type="file" name="license" id="license" accept="image/*" required>
+            <label for="rc_copy" class="file-input-label">Upload Vehicle Photo</label>
+            <input type="file" name="rc_copy" id="rc_copy" accept="image/*" required>
+            <button type="submit">Signup</button>
+            <p>Already have an account? <a href="login.html">Login</a></p>
+        </form>
+    </div>
+    <script>
+        function togglePasswordVisibility(passwordFieldId) {
+            var passwordInput = document.getElementById(passwordFieldId);
+            var eyeIcon = passwordInput.nextElementSibling;
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                eyeIcon.textContent = "👀";
+                setTimeout(function() {
+                    passwordInput.type = "password";
+                    eyeIcon.textContent = "👁️";
+                }, 2000);
+            } else {
+                passwordInput.type = "password";
+                eyeIcon.textContent = "👁️";
+            }
+        }
+
+        function validateSignup() {
+            var passwordInput = document.getElementById("password");
+            var confirmPasswordInput = document.getElementById("confirm_password");
+
+            var password = passwordInput.value;
+            var confirmPassword = confirmPasswordInput.value;
+
+            // Password validation
+            var passwordPattern = /^(?=.*[0-9]).{10,}$/;
+            if (!passwordPattern.test(password)) {
+                alert("Password must be at least 8 characters long and include at least one number.");
+                return false;
+            }
+
+            // Confirm password validation
+            if (password !== confirmPassword) {
+                alert("Passwords do not match.");
+                return false;
+            }
+
+            var licenseInput = document.querySelector("input[name='license']");
+            var rcCopyInput = document.querySelector("input[name='rc_copy']");
+            if (!licenseInput.files || licenseInput.files.length === 0) {
+                alert("Please upload your license file.");
+                return false;
+            }
+            if (!rcCopyInput.files || rcCopyInput.files.length === 0) {
+                alert("Please upload the vehicle photo.");
+                return false;
+            }
+
+            return true; // Return true to submit the form
+        }
+    </script>
+</body>
+</html>
